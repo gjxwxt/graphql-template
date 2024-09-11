@@ -4,24 +4,28 @@
 
 ## 目录结构
 
-├── config/ # 配置文件
-├── doc/ # 自动生成的 API 文档
-├── src/
-│ ├── db/ # 数据库连接和模型
-│ ├── resolvers/ # GraphQL 解析器
-│ ├── typeDefs/ # GraphQL 类型定义
-│ └── utils/ # 工具函数
-├── .env # 环境变量(不应提交到版本控制)
-├── .gitignore # Git 忽略文件
-├── package.json # 项目依赖和脚本
-└── server.js # 服务器入口文件
+- `src/`: 源代码目录
+  - `db/`: 数据库相关文件
+    - `models/`: Sequelize 模型定义
+  - `resolvers/`: GraphQL 解析器
+  - `typeDefs/`: GraphQL 类型定义
+  - `utils/`: 工具函数
+  - `index.js`: 应用程序入口点
+- `tests/`: 测试文件目录
+- `doc/`: 文档目录
+  - `schema/`: 自动生成的 API 文档
+- `.env`: 环境变量配置文件
+- `.gitignore`: Git 忽略文件
+- `package.json`: 项目依赖和脚本
+- `README.md`: 项目说明文档
+- `server.js`: 服务器启动文件
 
 ## 快速开始
 
 1. 克隆仓库:
 
    ```shell
-   git clone [仓库URL]
+   git clone https://github.com/gjxwxt/graphql-template.git
    ```
 
 2. 安装依赖:
@@ -83,7 +87,7 @@
 
 项目使用 GraphDoc 自动生成 API 文档。文档位于 `doc/schema/` 目录下。
 
-要更新文档，运行: npm run generate-docs
+要更新文档，运行: graphdoc -e <http://localhost:40000/graphql> -o ./doc/schema
 
 ## 测试
 
