@@ -1,0 +1,47 @@
+# 依赖目录
+node_modules/
+
+# 日志文件
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 运行时数据
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 目录
+dist/
+build/
+coverage/
+
+# 密钥文件
+.env
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE和编辑器文件
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+
+# 其他
+.npm
+.eslintcache
+.node_repl_history
+*.tgz
+.yarn-integrity
+
+# 项目特定文件
+combined.log
+error.log
+doc
