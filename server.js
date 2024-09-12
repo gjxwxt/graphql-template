@@ -10,11 +10,8 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { errorHandler } = require("./src/utils/errorHandler");
 const logger = require("./src/utils/logger");
-const db = require("./src/db");
 const path = require("path");
-
-// 定义不需要认证的操作白名单
-const publicOperations = ["login", "signup"];
+const authMiddleware = require("./src/middleware/auth");
 
 async function startServer() {
   const app = express();
@@ -22,34 +19,18 @@ async function startServer() {
   // 添加CORS中间件
   app.use(cors());
 
-  // JWT验证中间件
-  const getUser = (token) => {
-    if (token) {
-      try {
-        return jwt.verify(token, config.jwtSecret);
-      } catch (err) {
-        throw new Error("Session invalid");
-      }
-    }
-  };
+  // 添加身份验证中间件
+  app.use(authMiddleware);
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
   const apolloServer = new ApolloServer({
     schema,
     context: ({ req }) => {
-      // 获取操作名称
-      const operationName = req.body.operationName;
-
-      // 如果操作在白名单中，不进行token验证
-      if (publicOperations.includes(operationName)) {
-        return { config };
-      }
-
-      // 对于其他操作，进行token验证
-      const token = req.headers.authorization || "";
-      const user = getUser(token);
-      return { config, user };
+      return {
+        user: req.user,
+        config,
+      };
     },
     formatError: (error) => {
       logger.error(error);
@@ -72,13 +53,6 @@ async function startServer() {
     logger.info(`Server is running on http://localhost:${PORT}/graphql`);
     logger.info(`GraphQL Playground: http://localhost:${PORT}/docs/schema`);
   });
-
-  try {
-    await db.authenticate();
-    logger.info("Database connection has been established successfully.");
-  } catch (error) {
-    logger.error("Unable to connect to the database:", error);
-  }
 }
 
 startServer();

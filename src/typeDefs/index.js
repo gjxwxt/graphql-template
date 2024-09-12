@@ -1,9 +1,9 @@
 const { mergeTypeDefs } = require("@graphql-tools/merge");
-const user = require("./user");
+const base = require("./base");
 const auth = require("./auth");
 const query = require("./query");
-const mutation = require("./mutation");
+const login = require("./login");
 
-const types = [user, auth, query, mutation];
+const types = [base, auth, query, login];
 
 module.exports = mergeTypeDefs(types);

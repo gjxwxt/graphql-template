@@ -1,8 +1,7 @@
 const { mergeResolvers } = require("@graphql-tools/merge");
 const query = require("./query");
-const mutation = require("./mutation");
-const user = require("./user");
+const login = require("./login");
 
-const resolvers = mergeResolvers([query, mutation, user]);
+const resolvers = mergeResolvers([query, login]);
 
 module.exports = resolvers;

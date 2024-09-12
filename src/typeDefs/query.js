@@ -2,13 +2,23 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type Query {
-    """
-    返回一个问候消息
-    """
     hello: String
-    """
-    返回当前认证用户的信息
-    """
-    me: User
+    me: String
+    users(
+      username: String
+      age: Int
+      pageNum: Int!
+      pageSize: Int!
+    ): UserConnection!
+  }
+
+  type User {
+    id: ID!
+    username: String!
+  }
+
+  type UserConnection {
+    edges: [User!]!
+    pageInfo: PageInfo
   }
 `;

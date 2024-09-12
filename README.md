@@ -1,16 +1,17 @@
 # GraphQL API 项目模板
 
-这是一个使用 Node.js, Express, Apollo Server 和 Sequelize 构建的 GraphQL API 项目模板。
+这是一个使用 Node.js, Express, Apollo Server 和 Knex.js 构建的 GraphQL API 项目模板。
 
 ## 目录结构
 
 - `src/`: 源代码目录
+  - `config/`: 配置文件
   - `db/`: 数据库相关文件
-    - `models/`: Sequelize 模型定义
+  - `middleware/`: 中间件
   - `resolvers/`: GraphQL 解析器
+  - `services/`: 业务逻辑服务
   - `typeDefs/`: GraphQL 类型定义
   - `utils/`: 工具函数
-  - `index.js`: 应用程序入口点
 - `tests/`: 测试文件目录
 - `doc/`: 文档目录
   - `schema/`: 自动生成的 API 文档
@@ -42,6 +43,7 @@
    DB_NAME=your_database_name
    DB_USER=your_username
    DB_PASSWORD=your_password
+   DB_CONNECTION_LIMIT=10
    JWT_SECRET=your_jwt_secret
    NODE_ENV=development
    PORT=50000
@@ -66,18 +68,30 @@
 
 1. 在 `src/resolvers/` 目录下创建新的解析器文件。
 2. 在 `src/resolvers/index.js` 中导入并合并新的解析器。
+3. resolve 用于实现业务逻辑，在内部会有大量对数据库的操作，故避免过多造成难以维护现象，抽离到 services 文件夹中，单独实现数据库操作方法。
 
 ### 数据库操作
 
-- 使用 Sequelize 在 `src/db/` 目录下定义模型。
-- 在解析器中导入模型并进行数据库操作。
+- 使用 Knex.js 在 `src/services/` 目录下的服务类中进行数据库操作。
+- 在 `src/db/db.js` 中配置数据库连接。
+
+### 添加新的服务
+
+1. 在 `src/services/` 目录下创建新的服务类文件。
+2. 在 `src/services/ServiceFactory.js` 中添加新服务的获取方法。
+
+### 身份验证
+
+- 身份验证中间件位于 `src/middleware/auth.js`。
+- 在 `src/config/auth.js` 中配置不需要身份验证的操作白名单。
 
 ## 主要依赖说明
 
 - `express`: Web 应用框架
 - `apollo-server-express`: 用于 Express 的 Apollo Server 集成
 - `graphql`: GraphQL JavaScript 实现
-- `sequelize`: ORM 工具，用于数据库操作
+- `knex`: SQL 查询构建器
+- `mysql2`: MySQL 客户端
 - `jsonwebtoken`: 用于生成和验证 JWT
 - `bcryptjs`: 用于密码哈希
 - `dotenv`: 用于加载环境变量
